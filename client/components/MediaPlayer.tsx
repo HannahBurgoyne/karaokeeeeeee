@@ -3,10 +3,9 @@ import Queue from './Queue'
 import { getSongs } from '../apis/songs'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { Video } from '../../models/Video'
-import { getQueue } from '../apis/queue'
+import { addSongToQueue, deleteSongFromQueue, getQueue } from '../apis/queue'
 
 export default function MediaPlayer() {
-  const [queue, setQueue] = useState<Video[]>([])
   const [currentIndex, setCurrentIndex] = useState(0)
   const videoRef = useRef<HTMLVideoElement>(null)
 
@@ -20,7 +19,23 @@ export default function MediaPlayer() {
     refetchInterval: 3000, // Poll every 3s
   })
 
-  const currentVideo = queue[currentIndex]
+  const currentVideo = songQueue && songQueue[currentIndex]
+
+  // Mutation to delete a song from the queue after it has played
+  const deleteSongMutation = useMutation({
+    mutationFn: (videoId: number) => deleteSongFromQueue(videoId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['queue'] }) // Refresh the queue after deletion
+    },
+  })
+
+  // add a new song to the queue
+  const addMutation = useMutation({
+    mutationFn: (video: Video) => addSongToQueue(video),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['queue'] })
+    },
+  })
 
   useEffect(() => {
     if (videoRef.current && currentVideo) {
@@ -29,25 +44,26 @@ export default function MediaPlayer() {
     }
   }, [currentVideo])
 
-  const handleEnded = () => {
-    if (currentIndex + 1 < queue.length) {
-      setCurrentIndex((i) => i + 1)
+  function handleEnded() {
+    if (currentVideo) {
+      deleteSongMutation.mutate(currentVideo.id)
+    }
+
+    if (songQueue && songQueue.length > 0) {
+      if (currentIndex + 1 < songQueue.length) {
+        setCurrentIndex((i) => i + 1)
+      } else {
+        setCurrentIndex(0)
+      }
     } else {
       setCurrentIndex(0)
-      setQueue([]) // Clear queue at end
     }
   }
 
-  const addMutation = useMutation({
-    mutationFn: (video: Video) => addToQueue(video),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['queue'] }) // refresh queue
-    },
-  })
-
-  const addToQueue = (video: Video) => {
+  function addToQueue(video: Video) {
     addMutation.mutate(video)
   }
+
   return (
     <>
       <div className="p-6 max-w-xl mx-auto">
@@ -81,9 +97,7 @@ export default function MediaPlayer() {
           </div>
         )}
 
-        {queue.length > 0 && (
-          <Queue queue={queue} currentIndex={currentIndex} />
-        )}
+        {songQueue && <Queue queue={songQueue} currentIndex={currentIndex} />}
       </div>
     </>
   )

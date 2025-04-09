@@ -6,5 +6,7 @@ export async function getQueue(db = connection): Promise<Video[]> {
 }
 
 export async function addSongToQueue(song: Video, db = connection) {
-  return db('queue').insert(song)
+  // Remove id from the song object before inserting
+  const { id, ...songWithoutId } = song
+  return db('queue').insert(songWithoutId)
 }

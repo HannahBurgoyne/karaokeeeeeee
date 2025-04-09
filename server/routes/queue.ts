@@ -18,8 +18,10 @@ router.get('/', async (req, res) => {
 
 router.post('/', async (req, res) => {
   try {
-    const song = req.body as Video
+    console.log(req.body.video)
+    const song = req.body.video as Video
     await db.addSongToQueue(song)
+    console.log('song added')
     res.sendStatus(201)
   } catch (error) {
     if (error instanceof Error) {

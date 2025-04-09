@@ -6,6 +6,10 @@ export async function getQueue(): Promise<Video[]> {
   return res.body as Video[]
 }
 
-export async function addToQueue(video: Video) {
-  return request.post('/api/v1/queue').send({ video: video })
+export async function addSongToQueue(video: Video) {
+  return await request.post('/api/v1/queue').send({ video: video })
+}
+
+export async function deleteSongFromQueue(id: number) {
+  return await request.delete(`/api/v1/queue/${id}`)
 }
