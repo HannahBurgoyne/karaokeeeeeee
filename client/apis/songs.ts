@@ -1,5 +1,5 @@
 import request from 'superagent'
-import { NewVideo, Video } from '../../models/Video'
+import { Video } from '../../models/Video'
 
 const rootUrl = '/api/v1'
 
@@ -8,6 +8,7 @@ export async function getSongs(): Promise<Video[]> {
   return res.body as Video[]
 }
 
-export async function addSong(newSong: NewVideo) {
-  return await request.post(rootUrl + '/songs').send({ song: newSong })
+export async function addSong(newSong: FormData) {
+  console.log('api', newSong)
+  return await request.post(rootUrl + '/songs').send(newSong)
 }

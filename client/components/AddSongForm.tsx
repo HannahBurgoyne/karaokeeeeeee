@@ -1,9 +1,12 @@
 import { useState } from 'react'
-import { NewVideo } from '../../models/Video'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { addSong } from '../apis/songs'
 
-export default function AddSongForm() {
+interface Props {
+  setShowSongForm: React.Dispatch<React.SetStateAction<boolean>>
+}
+
+export default function AddSongForm({ setShowSongForm }: Props) {
   const [name, setName] = useState('')
   const [artist, setArtist] = useState('')
   const [url, setUrl] = useState('')
@@ -12,7 +15,7 @@ export default function AddSongForm() {
   const queryClient = useQueryClient()
 
   const addMutation = useMutation({
-    mutationFn: (newSong: NewVideo & { file: File | null }) => addSong(newSong),
+    mutationFn: (newSong: FormData) => addSong(newSong),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['songs'] })
     },
@@ -20,7 +23,7 @@ export default function AddSongForm() {
 
   function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
     if (e.target.files) {
-      setFile(e.target.files[0])
+      setFile(e.target.files?.[0])
     }
   }
 
@@ -29,26 +32,28 @@ export default function AddSongForm() {
 
     if (!name || !artist || !file) return // Ensure a file is provided
 
-    const newSong: NewVideo & { file: File | null } = {
-      name,
-      artist,
-      url,
-      file,
-    }
+    const formData = new FormData()
+    formData.append('video', file)
+    formData.append('name', name)
+    formData.append('artist', artist)
+    formData.append('url', url)
 
-    addMutation.mutate(newSong)
+    addMutation.mutate(formData)
 
     // Reset the form
     setName('')
     setArtist('')
     setUrl('')
     setFile(null)
+
+    setShowSongForm(false)
   }
 
   return (
     <form
       onSubmit={handleSubmit}
       className="max-w-md mx-auto p-4 bg-white shadow rounded-xl space-y-4"
+      encType="multipart/form-data"
     >
       <h2 className="text-xl font-bold text-center">Add a New Karaoke Song</h2>
 
@@ -82,7 +87,7 @@ export default function AddSongForm() {
       <input
         type="file"
         name="video"
-        accept="video/mp4"
+        accept="video/*"
         onChange={handleFileChange}
         className="w-full border border-gray-300 rounded p-2"
         required

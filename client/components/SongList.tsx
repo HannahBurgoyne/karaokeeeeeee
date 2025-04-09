@@ -3,9 +3,12 @@ import { getSongs } from '../apis/songs'
 import { Video } from '../../models/Video'
 import { addSongToQueue, getQueue } from '../apis/queue'
 import { useState } from 'react'
+import AddSongForm from './AddSongForm'
 
 export default function SongList() {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [warning, setWarning] = useState<string | null>(null)
+  const [showSongForm, setShowSongForm] = useState<boolean>(false)
 
   const { data } = useQuery({ queryKey: ['songs'], queryFn: getSongs })
   const { data: songQueue } = useQuery({
@@ -52,6 +55,8 @@ export default function SongList() {
       <h1 className="text-2xl font-bold mb-4">Karaoke Queue 🎤</h1>
 
       <div className="mb-6">
+        <button onClick={() => setShowSongForm(true)}>Add a new song</button>
+        {showSongForm && <AddSongForm setShowSongForm={setShowSongForm} />}
         <h2 className="text-xl font-semibold mb-2">Available Songs</h2>
         <ul className="space-y-2">
           {data?.map((video) => (
