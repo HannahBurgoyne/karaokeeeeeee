@@ -1,6 +1,10 @@
 import connection from './connection.ts'
-import { Fruit } from '../../models/fruit.ts'
+import { NewVideo, Video } from '../../models/Video.ts'
 
-export async function getAllFruits(db = connection): Promise<Fruit[]> {
-  return db('fruit').select()
+export async function getAllSongs(db = connection): Promise<Video[]> {
+  return db('songs').select()
+}
+
+export async function addSong(db = connection, newSong: NewVideo) {
+  return db('songs').insert(newSong)
 }
