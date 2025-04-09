@@ -5,9 +5,11 @@ import Footer from './Footer'
 function App() {
   return (
     <>
-      <div className="app">
+      <div className="app bg-purple-900">
         <Nav />
-        <Outlet />
+        <main className="p-t-20">
+          <Outlet />
+        </main>
         <Footer />
       </div>
     </>
