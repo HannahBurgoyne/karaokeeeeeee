@@ -55,7 +55,10 @@ export default function MediaPlayer() {
           <h2 className="text-xl font-semibold mb-2">Now Playing</h2>
           <p className="mb-2">{currentVideo.name}</p>
           <video ref={videoRef} width="100%" controls onEnded={handleEnded}>
-            <source src={currentVideo.url} type="video/mp4" />
+            <source
+              src={`public/videos/${currentVideo.url}`}
+              type="video/mp4"
+            />
             Your browser does not support the video tag.
           </video>
         </div>
