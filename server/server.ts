@@ -2,12 +2,14 @@ import express from 'express'
 import * as Path from 'node:path'
 
 import songRoutes from './routes/songs.ts'
+import queueRoutes from './routes/queue.ts'
 
 const server = express()
 
 server.use(express.json())
 
 server.use('/api/v1/songs', songRoutes)
+server.use('/api/v1/queue', queueRoutes)
 
 if (process.env.NODE_ENV === 'production') {
   server.use(express.static(Path.resolve('public')))

@@ -1,35 +1,24 @@
 import { useState, useRef, useEffect } from 'react'
 import Queue from './Queue'
 import { getSongs } from '../apis/songs'
-import { useQuery } from '@tanstack/react-query'
-
-const videos = [
-  {
-    id: 1,
-    name: 'Bohemian Rhapsody - Queen',
-    artist: '',
-    url: 'https://www.w3schools.com/html/mov_bbb.mp4',
-  },
-  {
-    id: 2,
-    name: 'Let It Go - Frozen',
-    artist: '',
-    url: 'https://www.w3schools.com/html/movie.mp4',
-  },
-  {
-    id: 3,
-    name: 'Never Gonna Give You Up - Rick Astley',
-    artist: '',
-    url: 'https://www.w3schools.com/html/mov_bbb.mp4', // duplicate for demo
-  },
-]
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { Video } from '../../models/Video'
+import { getQueue } from '../apis/queue'
 
 export default function MediaPlayer() {
-  const [queue, setQueue] = useState<typeof videos>([])
+  const [queue, setQueue] = useState<Video[]>([])
   const [currentIndex, setCurrentIndex] = useState(0)
   const videoRef = useRef<HTMLVideoElement>(null)
 
+  const queryClient = useQueryClient()
+
   const { data } = useQuery({ queryKey: ['songs'], queryFn: getSongs })
+
+  const { data: songQueue } = useQuery({
+    queryKey: ['queue'],
+    queryFn: getQueue,
+    refetchInterval: 3000, // Poll every 3s
+  })
 
   const currentVideo = queue[currentIndex]
 
@@ -49,10 +38,16 @@ export default function MediaPlayer() {
     }
   }
 
-  const addToQueue = (video: (typeof videos)[0]) => {
-    setQueue((prev) => [...prev, video])
-  }
+  const addMutation = useMutation({
+    mutationFn: (video: Video) => addToQueue(video),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['queue'] }) // refresh queue
+    },
+  })
 
+  const addToQueue = (video: Video) => {
+    addMutation.mutate(video)
+  }
   return (
     <>
       <div className="p-6 max-w-xl mx-auto">
