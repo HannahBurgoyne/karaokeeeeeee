@@ -7,25 +7,33 @@ export default function AddSongForm() {
   const [name, setName] = useState('')
   const [artist, setArtist] = useState('')
   const [url, setUrl] = useState('')
+  const [file, setFile] = useState<File | null>(null)
 
   const queryClient = useQueryClient()
 
   const addMutation = useMutation({
-    mutationFn: (newSong: NewVideo) => addSong(newSong),
+    mutationFn: (newSong: NewVideo & { file: File | null }) => addSong(newSong),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['songs'] })
     },
   })
 
+  function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
+    if (e.target.files) {
+      setFile(e.target.files[0])
+    }
+  }
+
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
 
-    if (!name || !artist || !url) return
+    if (!name || !artist || !file) return // Ensure a file is provided
 
-    const newSong: NewVideo = {
+    const newSong: NewVideo & { file: File | null } = {
       name,
       artist,
       url,
+      file,
     }
 
     addMutation.mutate(newSong)
@@ -34,6 +42,7 @@ export default function AddSongForm() {
     setName('')
     setArtist('')
     setUrl('')
+    setFile(null)
   }
 
   return (
@@ -66,6 +75,15 @@ export default function AddSongForm() {
         placeholder="Video URL"
         value={url}
         onChange={(e) => setUrl(e.target.value)}
+        className="w-full border border-gray-300 rounded p-2"
+      />
+
+      {/* File upload input */}
+      <input
+        type="file"
+        name="video"
+        accept="video/mp4"
+        onChange={handleFileChange}
         className="w-full border border-gray-300 rounded p-2"
         required
       />

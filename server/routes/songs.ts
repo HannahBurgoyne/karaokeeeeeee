@@ -2,6 +2,7 @@ import { Router } from 'express'
 
 import * as db from '../db/songs.ts'
 import { NewVideo } from '../../models/Video.ts'
+import upload from '../upload.js'
 
 const router = Router()
 
@@ -16,7 +17,7 @@ router.get('/', async (req, res) => {
   }
 })
 
-router.post('/', async (req, res) => {
+router.post('/', upload.single('video'), async (req, res) => {
   try {
     const newSong = req.body as NewVideo
     await db.addSong(newSong)
