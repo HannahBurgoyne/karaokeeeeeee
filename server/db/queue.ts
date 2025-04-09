@@ -7,6 +7,7 @@ export async function getQueue(db = connection): Promise<Video[]> {
 
 export async function addSongToQueue(song: Video, db = connection) {
   // Remove id from the song object before inserting
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { id, ...songWithoutId } = song
   return db('queue').insert(songWithoutId)
 }
