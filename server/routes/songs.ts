@@ -1,6 +1,7 @@
 import { Router } from 'express'
 
-import * as db from '../db/fruits.ts'
+import * as db from '../db/songs.ts'
+import { NewVideo } from '../../models/Video.ts'
 
 const router = Router()
 
@@ -17,8 +18,8 @@ router.get('/', async (req, res) => {
 
 router.post('/', async (req, res) => {
   try {
-    const newSong = req.body
-    await addSong(newSong)
+    const newSong = req.body as NewVideo
+    await db.addSong(newSong)
     res.sendStatus(201)
   } catch (error) {
     if (error instanceof Error) {

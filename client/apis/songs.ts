@@ -5,9 +5,9 @@ const rootUrl = '/api/v1'
 
 export async function getSongs(): Promise<Video[]> {
   const res = await request.get(rootUrl + '/songs')
-  return res.body.songs
+  return res.body as Video[]
 }
 
 export async function addSong(newSong: NewVideo) {
-  await request.post(rootUrl + '/songs').send({ song: newSong })
+  return await request.post(rootUrl + '/songs').send({ song: newSong })
 }

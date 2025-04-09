@@ -1,5 +1,7 @@
 import { useState, useRef, useEffect } from 'react'
 import Queue from './Queue'
+import { getSongs } from '../apis/songs'
+import { useQuery } from '@tanstack/react-query'
 
 const videos = [
   {
@@ -26,6 +28,8 @@ export default function MediaPlayer() {
   const [queue, setQueue] = useState<typeof videos>([])
   const [currentIndex, setCurrentIndex] = useState(0)
   const videoRef = useRef<HTMLVideoElement>(null)
+
+  const { data } = useQuery({ queryKey: ['songs'], queryFn: getSongs })
 
   const currentVideo = queue[currentIndex]
 
@@ -57,7 +61,7 @@ export default function MediaPlayer() {
         <div className="mb-6">
           <h2 className="text-xl font-semibold mb-2">Available Songs</h2>
           <ul className="space-y-2">
-            {videos.map((video) => (
+            {data?.map((video) => (
               <li key={video.id} className="flex justify-between items-center">
                 <span>{video.name}</span>
                 <button

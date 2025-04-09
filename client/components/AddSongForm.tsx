@@ -1,14 +1,21 @@
 import { useState } from 'react'
 import { NewVideo } from '../../models/Video'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { addSong } from '../apis/songs'
 
 export default function AddSongForm() {
   const [name, setName] = useState('')
   const [artist, setArtist] = useState('')
   const [url, setUrl] = useState('')
 
-  function addSong(newSong: NewVideo) {
-    console.log(newSong)
-  }
+  const queryClient = useQueryClient()
+
+  const addMutation = useMutation({
+    mutationFn: (newSong: NewVideo) => addSong(newSong),
+    onSuccess: () => {
+      queryClient.invalidateQueries(['songs'])
+    },
+  })
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
@@ -21,7 +28,7 @@ export default function AddSongForm() {
       url,
     }
 
-    addSong(newSong)
+    addMutation.mutate(newSong)
 
     // Reset the form
     setName('')

@@ -5,6 +5,6 @@ export async function getAllSongs(db = connection): Promise<Video[]> {
   return db('songs').select()
 }
 
-export async function addSong(db = connection, newSong: NewVideo) {
+export async function addSong(newSong: NewVideo, db = connection) {
   return db('songs').insert(newSong)
 }
