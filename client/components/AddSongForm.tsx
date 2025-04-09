@@ -13,7 +13,7 @@ export default function AddSongForm() {
   const addMutation = useMutation({
     mutationFn: (newSong: NewVideo) => addSong(newSong),
     onSuccess: () => {
-      queryClient.invalidateQueries(['songs'])
+      queryClient.invalidateQueries({ queryKey: ['songs'] })
     },
   })
 
