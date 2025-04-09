@@ -1,10 +1,19 @@
 import { useQueryClient, useQuery, useMutation } from '@tanstack/react-query'
 import { getSongs } from '../apis/songs'
 import { Video } from '../../models/Video'
-import { addSongToQueue } from '../apis/queue'
+import { addSongToQueue, getQueue } from '../apis/queue'
+import { useState } from 'react'
 
 export default function SongList() {
+  const [warning, setWarning] = useState<string | null>(null)
+
   const { data } = useQuery({ queryKey: ['songs'], queryFn: getSongs })
+  const { data: songQueue } = useQuery({
+    queryKey: ['queue'],
+    queryFn: getQueue,
+    refetchInterval: 3000, // Poll every 3s
+  })
+
   const queryClient = useQueryClient()
 
   // add a new song to the queue
@@ -16,7 +25,26 @@ export default function SongList() {
   })
 
   function addToQueue(video: Video) {
-    addMutation.mutate(video)
+    // Check if the song already exists in the queue
+    const songExists = songQueue?.some((song) => song.name === video.name)
+
+    if (songExists) {
+      setWarning(
+        `"${video.name}" is already in the queue. Do you still want to add it?`,
+      )
+
+      // Ask for confirmation if the song exists
+      if (
+        window.confirm(
+          `"${video.name}" is already in the queue. Do you want to add it again?`,
+        )
+      ) {
+        addMutation.mutate(video)
+      }
+    } else {
+      // Add song if it doesn't exist in the queue
+      addMutation.mutate(video)
+    }
   }
 
   return (
