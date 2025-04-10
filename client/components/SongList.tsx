@@ -6,6 +6,7 @@ import { useState } from 'react'
 import AddSongForm from './AddSongForm'
 
 export default function SongList() {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [warning, setWarning] = useState<string | null>(null)
   const [showSongForm, setShowSongForm] = useState<boolean>(false)
   const [sortBy, setSortBy] = useState<'artist' | 'name'>('artist')
