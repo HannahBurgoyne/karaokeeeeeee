@@ -2,10 +2,10 @@ import { Link, NavLink } from 'react-router-dom'
 
 export default function Nav() {
   return (
-    <nav className="w-full bg-purple-900 shadow-md z-50">
-      <div className="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
+    <nav className="w-full shadow-md z-50">
+      <div className="max-w-7xl mx-auto px-4 py-3 flex justify-around items-center">
         <div>
-          <Link to="/" className="text-xl font-bold text-pink-600">
+          <Link to="/" className="text-xl font-bold text-purple-500">
             Karaoke App
           </Link>
         </div>
@@ -14,8 +14,8 @@ export default function Nav() {
             to="/"
             className={({ isActive }) =>
               isActive
-                ? 'text-pink-600 font-semibold'
-                : 'text-gray-700 hover:text-pink-500'
+                ? 'text-purple-400 font-semibold'
+                : 'text-purple-500 hover:text-pink-500'
             }
           >
             Home
@@ -26,8 +26,8 @@ export default function Nav() {
             to="/songs"
             className={({ isActive }) =>
               isActive
-                ? 'text-pink-600 font-semibold'
-                : 'text-gray-700 hover:text-pink-500'
+                ? 'text-purple-400 font-semibold'
+                : 'text-purple-500 hover:text-pink-500'
             }
           >
             Songs

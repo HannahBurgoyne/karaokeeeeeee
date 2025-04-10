@@ -36,7 +36,6 @@ export default function AddSongForm({ setShowSongForm }: Props) {
     formData.append('video', file)
     formData.append('name', name)
     formData.append('artist', artist)
-    formData.append('url', url)
 
     addMutation.mutate(formData)
 
@@ -73,14 +72,6 @@ export default function AddSongForm({ setShowSongForm }: Props) {
         onChange={(e) => setArtist(e.target.value)}
         className="w-full border border-gray-300 rounded p-2"
         required
-      />
-
-      <input
-        type="url"
-        placeholder="Video URL"
-        value={url}
-        onChange={(e) => setUrl(e.target.value)}
-        className="w-full border border-gray-300 rounded p-2"
       />
 
       {/* File upload input */}

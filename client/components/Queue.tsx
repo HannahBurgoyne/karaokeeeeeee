@@ -7,17 +7,15 @@ interface Props {
 
 export default function Queue({ queue, currentIndex }: Props) {
   return (
-    <div>
-      <h2 className="text-xl font-semibold mb-2">Up Next</h2>
-      <ul className="list-inside">
-        {queue[currentIndex + 1] ? (
-          <li key={queue[currentIndex + 1].id}>
-            {queue[currentIndex + 1].name}
-          </li>
-        ) : (
-          <li>No more songs in the queue</li>
-        )}
-      </ul>
+    <div className="p-4 flex items-center bg-purple-600 rounded-md m-8">
+      {queue[currentIndex + 1] ? (
+        <h2 className="text-xl font-semibold" key={queue[currentIndex + 1].id}>
+          Up Next: {queue[currentIndex + 1].name} -{' '}
+          {queue[currentIndex + 1].artist}
+        </h2>
+      ) : (
+        <h2>No more songs in the queue</h2>
+      )}
     </div>
   )
 }

@@ -1,3 +1,7 @@
 export default function Footer() {
-  return <p>This is a footer.</p>
+  return (
+    <footer className="flex justify-center items-center p-2">
+      <p className="text-sm"></p>
+    </footer>
+  )
 }

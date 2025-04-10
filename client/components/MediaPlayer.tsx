@@ -51,10 +51,11 @@ export default function MediaPlayer() {
   return (
     <>
       {currentVideo && (
-        <div className="mb-6">
-          <h2 className="text-xl font-semibold mb-2">Now Playing</h2>
-          <p className="mb-2">{currentVideo.name}</p>
-          <video ref={videoRef} width="100%" controls onEnded={handleEnded}>
+        <div className="mb-6 flex flex-col items-center justify-center text-purple-500">
+          <h2 className="text-xl font-semibold p-10">
+            Now Playing: {currentVideo.name} - {currentVideo.artist}
+          </h2>
+          <video ref={videoRef} width="45%" controls onEnded={handleEnded}>
             <source
               src={`public/videos/${currentVideo.url}`}
               type="video/mp4"
