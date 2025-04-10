@@ -11,3 +11,7 @@ export async function addSongToQueue(song: Video, db = connection) {
   const { id, ...songWithoutId } = song
   return db('queue').insert(songWithoutId)
 }
+
+export async function deleteSongFromQueue(id: number, db = connection) {
+  return db('queue').where('id', id).delete()
+}

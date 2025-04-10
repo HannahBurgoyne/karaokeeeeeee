@@ -28,4 +28,16 @@ router.post('/', async (req, res) => {
   }
 })
 
+router.delete('/:id', async (req, res) => {
+  try {
+    const songId = Number(req.params.id)
+    await db.deleteSongFromQueue(songId)
+    res.sendStatus(200)
+  } catch (error) {
+    if (error instanceof Error) {
+      res.status(500).send(error.message)
+    }
+  }
+})
+
 export default router
