@@ -1,6 +1,4 @@
 export default function slugifyFilename(filename: string): string {
-  console.log('Original filename:', filename)
-
   // Check if the filename has an extension, if not, add a default one
   const match = filename.match(/^(.*?)(\.[a-zA-Z0-9]+)?$/) // Match filename and optional extension
 
@@ -25,6 +23,5 @@ export default function slugifyFilename(filename: string): string {
 
   const newFilename = `${slug}` // Ensure extension is in lowercase
 
-  console.log('Slugified filename:', newFilename)
   return newFilename
 }
