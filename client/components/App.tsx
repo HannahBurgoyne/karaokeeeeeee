@@ -5,7 +5,7 @@ import Footer from './Footer'
 function App() {
   return (
     <>
-      <div className="app bg-purple-900 h-screen w-full">
+      <div className="app bg-purple-900 min-h-screen w-full">
         <Nav />
         <main className="p-t-20 ">
           <Outlet />

@@ -22,16 +22,19 @@ export default function Sidebar() {
 
   if (queue)
     return (
-      <section>
-        <h2 className="text-xl shadow-xl mb-2 py-5">Song Queue</h2>
-        <ul>
+      <section className="overflow-visible">
+        <h2 className="text-xl shadow-xl p-5">Song Queue</h2>
+        <ul className="overflow-visible">
           {queue?.map((song, idx) => (
             <li
-              className="mb-2 p-2 bg-pink-500 shadow-l flex justify-between items-center"
+              className="p-4 bg-pink-500 shadow-l flex justify-between items-center rounded overflow-visible"
               key={`${song.id}: ${idx}`}
               style={{
-                boxShadow:
-                  '0 4px 6px rgba(0, 0, 0, 0.1), inset 0 0 20px rgba(0, 0, 0, 0.2)',
+                boxShadow: `
+                 0 -4px 6px -4px rgba(0, 0, 0, 0.1),
+                 0 4px 6px -4px rgba(0, 0, 0, 0.1),
+                 inset 0 0 20px rgba(0, 0, 0, 0.2)
+               `,
               }}
             >
               <span className="flex-1">
