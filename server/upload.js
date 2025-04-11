@@ -1,5 +1,6 @@
 import multer from 'multer'
 import path from 'path'
+import slugifyFilename from '../utils/slugify'
 
 // Define storage for uploaded files
 const storage = multer.diskStorage({
@@ -9,7 +10,10 @@ const storage = multer.diskStorage({
   },
   filename: function (req, file, callback) {
     // Generate a unique filename for the uploaded file
-    callback(null, file.originalname)
+    const originalName = path.parse(file.originalname).name
+    const extension = path.extname(file.originalname)
+    const safeName = slugifyFilename(originalName)
+    callback(null, `${safeName}${extension}`)
   },
 })
 

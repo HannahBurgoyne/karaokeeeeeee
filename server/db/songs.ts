@@ -7,7 +7,7 @@ import path from 'path'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
-const seedFilePath = path.join(__dirname, './backup-data/backupSongs.js')
+const seedFilePath = path.join(__dirname, './backup-data/backupSongs.json')
 
 export async function getAllSongs(db = connection): Promise<Video[]> {
   return db('songs').select()
