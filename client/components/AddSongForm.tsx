@@ -9,6 +9,7 @@ interface Props {
 export default function AddSongForm({ setShowSongForm }: Props) {
   const [name, setName] = useState('')
   const [artist, setArtist] = useState('')
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [url, setUrl] = useState('')
   const [file, setFile] = useState<File | null>(null)
 
@@ -61,7 +62,7 @@ export default function AddSongForm({ setShowSongForm }: Props) {
         placeholder="Song Name"
         value={name}
         onChange={(e) => setName(e.target.value)}
-        className="w-full border border-gray-300 rounded p-2"
+        className="w-full border border-pink-500 rounded p-2"
         required
       />
 
@@ -70,7 +71,7 @@ export default function AddSongForm({ setShowSongForm }: Props) {
         placeholder="Artist"
         value={artist}
         onChange={(e) => setArtist(e.target.value)}
-        className="w-full border border-gray-300 rounded p-2"
+        className="w-full border border-pink-500 rounded p-2"
         required
       />
 
@@ -80,7 +81,7 @@ export default function AddSongForm({ setShowSongForm }: Props) {
         name="video"
         accept="video/*"
         onChange={handleFileChange}
-        className="w-full border border-gray-300 rounded p-2"
+        className="w-full border rounded p-2"
         required
       />
 

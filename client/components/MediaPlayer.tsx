@@ -48,6 +48,8 @@ export default function MediaPlayer() {
     }
   }
 
+  console.log(currentVideo?.url)
+
   return (
     <>
       {currentVideo && (
@@ -56,7 +58,7 @@ export default function MediaPlayer() {
             Now Playing: {currentVideo.name} - {currentVideo.artist}
           </h2>
           <video ref={videoRef} width="45%" controls onEnded={handleEnded}>
-            <source src={`videos/${currentVideo.url}`} type="video/mp4" />
+            <source src={`/videos/${currentVideo.url}`} type="video/mp4" />
             Your browser does not support the video tag.
           </video>
         </div>

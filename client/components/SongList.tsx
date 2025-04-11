@@ -1,8 +1,8 @@
+import { useState, useEffect } from 'react'
 import { useQueryClient, useQuery, useMutation } from '@tanstack/react-query'
 import { getSongs } from '../apis/songs'
 import { Video } from '../../models/Video'
 import { addSongToQueue, getQueue } from '../apis/queue'
-import { useState } from 'react'
 import AddSongForm from './AddSongForm'
 
 export default function SongList() {
@@ -61,6 +61,35 @@ export default function SongList() {
         : a.name.localeCompare(b.name, undefined, { sensitivity: 'base' }),
     )
 
+  // Close the form if the overlay (background) is clicked
+  const handleOverlayClick = (e: React.MouseEvent) => {
+    if (e.target === e.currentTarget) {
+      setShowSongForm(false)
+    }
+  }
+
+  // Close the form if the Escape key is pressed
+  const handleEscKeyPress = (e: KeyboardEvent) => {
+    if (e.key === 'Escape') {
+      setShowSongForm(false)
+    }
+  }
+
+  // Add event listener for Escape key when the form is shown
+  useEffect(() => {
+    if (showSongForm) {
+      // Listen for the Escape key press
+      window.addEventListener('keydown', handleEscKeyPress)
+    } else {
+      // Clean up the event listener when the form is hidden
+      window.removeEventListener('keydown', handleEscKeyPress)
+    }
+
+    return () => {
+      window.removeEventListener('keydown', handleEscKeyPress)
+    }
+  }, [showSongForm])
+
   return (
     <div className="p-6 max-w-xl mx-auto">
       <div className="flex flex-col sm:flex-row justify-between items-center mb-4 gap-4">
@@ -112,7 +141,21 @@ export default function SongList() {
         >
           Add a new song
         </button>
-        {showSongForm && <AddSongForm setShowSongForm={setShowSongForm} />}
+        {/* The form section */}
+        {showSongForm && (
+          // esc key can also be used to get out of form, see above code
+          <div
+            className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50"
+            onClick={handleOverlayClick} // Add click handler to overlay
+          >
+            <div
+              className="bg-white p-8 rounded-lg shadow-lg w-96"
+              onClick={(e) => e.stopPropagation()} // Prevent click from propagating to the overlay
+            >
+              <AddSongForm setShowSongForm={setShowSongForm} />
+            </div>
+          </div>
+        )}
       </div>
     </div>
   )
