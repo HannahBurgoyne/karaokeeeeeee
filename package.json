@@ -1,11 +1,11 @@
 {
-  "name": "boilerplate-fullstack",
+  "name": "karaokeeeeeeee",
   "type": "module",
   "version": "2.0.0",
   "main": "server/index.js",
   "license": "MIT",
   "keywords": [
-    "fullstack"
+    "fullstack", "karaoke"
   ],
   "scripts": {
     "test": "vitest",
