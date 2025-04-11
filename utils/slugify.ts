@@ -12,6 +12,7 @@ export default function slugifyFilename(filename: string): string {
   const [_, name, extension] = match
 
   // If no extension is found, use a default one like ".mp4"
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const finalExtension = extension || '.mp4'
 
   // Slugify the name by replacing spaces/underscores with dashes and removing invalid characters
