@@ -33,19 +33,11 @@ export default function MediaPlayer() {
   }, [currentVideo])
 
   function handleEnded() {
-    if (currentVideo) {
-      deleteSongMutation.mutate(currentVideo.id)
-    }
+    if (!currentVideo) return
 
-    if (songQueue && songQueue.length > 0) {
-      if (currentIndex + 1 < songQueue.length) {
-        setCurrentIndex((i) => i + 1)
-      } else {
-        setCurrentIndex(0)
-      }
-    } else {
-      setCurrentIndex(0)
-    }
+    deleteSongMutation.mutate(currentVideo.id)
+    // Let useQuery handle reloading the next song (at index 0)
+    setCurrentIndex(0)
   }
 
   console.log(currentVideo?.url)
